@@ -16,7 +16,7 @@ The following prerequisites needs to be completed before using this ansible scri
 Steps to execute
 ===========================================================================================================================
 
-1) Clone the repository to your local work station by running "git clone https://github.com/rgopunar/MSSQL-Deployment"
+1) Clone the repository to your local work station by running " git clone  https://github.com/ucs-compute-solutions/MSSQL-Deployment.git"
 2) Go to MSSQL-Deployment/ folder
 3) Provide your Microsoft SQL Server pod requirement deatils in the file group_vars/all.yml. This deployment
 4) Deploy MSSQL Server pod by runing "ansible-playbook deploy-mssqlpod.yml"
