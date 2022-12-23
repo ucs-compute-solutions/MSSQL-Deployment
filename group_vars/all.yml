@@ -1,0 +1,19 @@
+---
+# Set the following variable as per your requirement.
+
+sql_pod_name: ucsdb
+sql_sa_pwd: Qweasd@123
+sql_portnum: 30001
+sql_version: "2019"
+sql_datavol_size_GB: "5"
+sql_logvol_size_GB: "15"
+sql_cpus: "4"
+sql_memory_GB: "12"
+sql_projectname_ns: sql
+sql_sc: mssql-sc
+
+##################################################################################
+# Supported MSSQL versions (sql_version) are 2017,2019 and 2022.                 #
+# Ensure the Port number (sql_portnum) is free and unused.                       #
+# Ensure Storage Class (sql_sc) is already created on the K8s/OCP cluster.       #
+##################################################################################

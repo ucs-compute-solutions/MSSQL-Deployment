@@ -1,0 +1,34 @@
+---
+    - name: Create ConfigMap for mounting  mssql.conf file at /var/opt/mssql/mssql.conf
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: "{{ 'mssqlconf-' + sql_pod_name }}"
+            namespace: "{{ sql_projectname_ns }}"
+          data:
+            mssql.conf: |
+              [sqlagent]
+              enabled = false
+
+              [EULA]
+              accepteula = Y
+              accepteulaml = Y
+
+              [filelocation]
+              defaultdatadir = /var/opt/mssql/data
+              defaultlogdir = /mnt/mssqllogs
+
+              [memory]
+              memorylimitmb = 9216
+
+              [control]
+              WriteThrough = 1
+              AlternativeWriteThrough = 1
+
+              [traceflag]
+              traceflag1 = 834
+              traceflag2 = 3982
+

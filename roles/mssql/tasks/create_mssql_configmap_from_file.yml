@@ -1,0 +1,3 @@
+---
+    - name: Creating ConfigMap from file roles/mssql/files/mssql.conf file. 
+      shell: oc create configmap {{ 'mssqlconf-' + sql_pod_name }} --from-file ./roles/mssql/files/mssql.conf -n {{ sql_projectname_ns }}

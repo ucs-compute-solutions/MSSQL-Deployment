@@ -1,0 +1,22 @@
+---
+    - name: Create Portworx Volume Placement Strategy
+      kubernetes.core.k8s:
+        state: present
+        namespace: "{{ sql_projectname_ns }}"
+        definition:
+          apiVersion: portworx.io/v1beta2
+          kind: VolumePlacementStrategy
+          metadata:
+            name: "{{ sql_pod_name + '-vps' }}"
+          spec:
+            volumeAffinity:
+              - matchExpressions:
+                - key: 'namespace'
+                  operator: In
+                  values:
+                      - '${pvc.namespace}'
+                - key: app
+                  operator: In
+                  values:
+                    - "{{ 'mssql-' + sql_pod_name }}"
+

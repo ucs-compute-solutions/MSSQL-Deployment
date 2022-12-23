@@ -1,0 +1,21 @@
+---
+    - name: Create PX volume for storing user database T-Log
+      kubernetes.core.k8s:
+        state: present
+        namespace: "{{ sql_projectname_ns }}"
+        definition:
+          kind: PersistentVolumeClaim
+          apiVersion: v1
+          metadata:
+            name: "{{ sql_pod_name + '-logvol' }}"
+            labels:
+              app: "{{ 'mssql-' + sql_pod_name }}"
+            annotations:
+              placement_strategy: "{{ sql_pod_name + '-vps' }}"
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: "{{ sql_logvol_size_GB + 'Gi' }}"
+            storageClassName: "{{ sql_sc }}"

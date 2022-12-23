@@ -1,0 +1,18 @@
+---
+    - name: Create service for mssql pod
+      kubernetes.core.k8s:
+        state: present
+        namespace: "{{ sql_projectname_ns }}"
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: "{{ sql_pod_name + '-svc' }}"
+          spec:
+            selector:
+              role: "{{ 'mssql-' +  sql_pod_name }}"
+            ports:
+              - protocol: TCP
+                port: 1433
+                nodePort: "{{ sql_portnum }}"
+            type: NodePort

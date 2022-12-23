@@ -1,0 +1,15 @@
+---
+# tasks file for roles/mssql
+
+- import_tasks: create_ns.yml
+- import_tasks: create_ocp_scc.yml
+- import_tasks: add_ocp_scc_mssql_sa.yml
+- import_tasks: create_secret.yml
+- import_tasks: create_mssql_configmap_from_file.yml
+- import_tasks: create_px_vps.yml
+- import_tasks: create_datavol.yml
+- import_tasks: create_logvol.yml
+- import_tasks: create_sqlpod.yml
+- import_tasks: create_service.yml
+
+

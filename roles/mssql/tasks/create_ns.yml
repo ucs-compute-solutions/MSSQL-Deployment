@@ -1,0 +1,10 @@
+---
+ - name: Create namespace or OCP project for mssql pods
+   kubernetes.core.k8s:
+     state: present
+     definition:
+          kind: Namespace
+          apiVersion: v1
+          metadata:
+            name: "{{ sql_projectname_ns }}"
+

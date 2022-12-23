@@ -1,0 +1,18 @@
+---
+- name: Cleanup - delete all the delployed ocp objects using the values provided in group_vars/all.yml
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+   - name: Delete deployment
+     shell: oc delete deployment "{{ 'mssql-dep-' + sql_pod_name }}" -n "{{ sql_projectname_ns }}"
+   - name: Delete PX vps
+     shell: oc delete vps "{{ sql_pod_name + '-vps' }}" -n "{{ sql_projectname_ns }}"
+   - name: Delete PVCs
+     shell: oc delete pvc "{{ sql_pod_name + '-datavol' }}"  "{{ sql_pod_name + '-logvol' }}" -n  "{{ sql_projectname_ns }}"
+   - name: Delete Secret
+     shell: oc delete secret "{{ sql_pod_name  + '-secret' }}" -n "{{ sql_projectname_ns }}"
+   - name: Delete ConfigMap
+     shell: oc delete configmap {{ 'mssqlconf-' + sql_pod_name }} -n "{{ sql_projectname_ns }}"
+   - name: Delete namespace
+     shell: oc delete namespace "{{ sql_projectname_ns }}"

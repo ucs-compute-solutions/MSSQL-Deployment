@@ -1,0 +1,73 @@
+---
+    - name: Create Microsoft SQL Server pod
+      kubernetes.core.k8s:
+        #src: mssql-deployment-oltp_pod1.yml
+        state: present
+        namespace: "{{ sql_projectname_ns }}"
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: "{{ 'mssql-dep-' + sql_pod_name }}"
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                role: "{{ 'mssql-' + sql_pod_name }}"
+            template:
+              metadata:
+                labels:
+                  role: "{{ 'mssql-' +  sql_pod_name }}"
+                  app: mssql
+              spec:
+                schedulerName: stork
+                terminationGracePeriodSeconds: 30
+                hostname: "{{ 'mssql-' + sql_pod_name }}"
+                containers:
+                  - name: mssql
+                    image: "{{ 'mcr.microsoft.com/mssql/server:' + sql_version + '-latest' }}"
+                    ports:
+                      - containerPort: 1433
+                    resources:
+                      requests:
+                        cpu: "{{ sql_cpus + '000m' }}"
+                        memory: "{{ sql_memory_GB + 'Gi' }}"
+                      limits:
+                        cpu: "{{ sql_cpus + '000m' }}"
+                        memory: "{{ sql_memory_GB + 'Gi' }}"
+                    env:
+                     - name: MSSQL_PID
+                       value: "Developer"
+                     - name: ACCEPT_EULA
+                       value: "Y"
+                     - name: SA_PASSWORD
+                       valueFrom:
+                         secretKeyRef:
+                          name: "{{ sql_pod_name  + '-secret' }}"
+#                          name: mssql
+                          key: SA_PASSWORD
+                    volumeMounts:
+                     - name: mssql-data
+                       mountPath: /var/opt/mssql
+                     - name: mssql-log
+                       mountPath: /mnt/mssqllogs
+                     - name: mssqlconf
+                       mountPath: /var/opt/mssql/mssql.conf
+                       subPath: mssql.conf      
+#                     - name: mssql-bkp-shared
+#                       mountPath: /mnt/backup
+                volumes:
+                 - name: mssql-data
+                   persistentVolumeClaim:
+                     claimName: "{{ sql_pod_name + '-datavol' }}"
+                 - name: mssql-log
+                   persistentVolumeClaim:
+                     claimName: "{{ sql_pod_name + '-logvol' }}"
+                 - name: mssqlconf
+                   configMap:
+                     name: "{{ 'mssqlconf-' + sql_pod_name }}"
+              
+#                 - name: mssql-bkp-shared
+#                   persistentVolumeClaim:
+#                     claimName: mssql-bkp-shared
+

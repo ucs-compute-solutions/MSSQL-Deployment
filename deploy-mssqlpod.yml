@@ -1,0 +1,7 @@
+---
+- name: Deploy Microsoft SQL Server pod on OCP cluster using Portworx volumes.
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  roles:
+    - mssql
