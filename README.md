@@ -18,7 +18,7 @@ Steps to execute
 
 1) Clone the repository to your local work station by running " git clone  https://github.com/ucs-compute-solutions/MSSQL-Deployment.git"
 2) Go to MSSQL-Deployment/ folder
-3) Provide your Microsoft SQL Server pod requirement deatils in the file group_vars/all.yml. This deployment
+3) Provide your Microsoft SQL Server pod requirement deatils in the file group_vars/all.yml.
 4) Deploy MSSQL Server pod by runing "ansible-playbook deploy-mssqlpod.yml"
 5) To clean up the pod, run "ansible-playbook cleanup.yml".
 
